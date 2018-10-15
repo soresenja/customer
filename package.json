@@ -1,0 +1,20 @@
+{
+  "name": "com.apartemen.cust",
+  "version": "1.0.0",
+  "displayName": "Customer",
+  "cordova": {
+    "platforms": [
+      "android",
+      "browser"
+    ],
+    "plugins": {
+      "cordova-plugin-whitelist": {},
+      "cordova-plugin-geolocation": {}
+    }
+  },
+  "dependencies": {
+    "cordova-android": "~7.1.1",
+    "cordova-browser": "^5.0.4",
+    "cordova-plugin-geolocation": "^4.0.1"
+  }
+}

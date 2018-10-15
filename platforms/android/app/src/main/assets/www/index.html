@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+        <title>Blank App</title>
+    <link rel="stylesheet" type="text/css" href="leaflet/leaflet.css">
+    <script type="text/javascript" src="leaflet/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+    <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+    <style type="text/css">
+        *{
+            margin:0;
+            padding:0;
+        }
+        .logo{
+            width: 50%;
+            margin:50px auto;
+            text-align: center;
+        }
+        .form-cont{
+            padding:10px 15px;
+        }
+    </style>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            var url= "http://localhost/backend-app/config/login.php";
+
+            $("#login").click(function(){
+                var user = $("#username").val();
+                var pass = $("#password").val();
+                $("#status").text("Wait...");
+                var dataString = "username="+user+"&password="+pass;
+                $.ajax({
+                    type:"POST",
+                    crossDomain:true,
+                    cache:false,
+                    url:url,
+                    data:dataString,
+                    success:function(data){
+                        if(data=="success"){
+                            $("#status").text("Sukses");
+                            localStorage.loginstatus="Username : "+user;
+                            window.location="main.html";
+                        }else if(data=="error"){
+                            $("#status").text("Gagal");
+                        }
+                    }
+                });  
+            })
+        });
+    </script>
+</head>
+
+<body>
+    <div data-role="page">
+        <div class="logo">
+            LOGO
+        </div>
+        <div data-role="main">
+            <div class="form-cont">
+                <label for="text-basic">Text input:</label>
+                    <input type="text" name="text-basic" id="username" value="">
+
+                <label for="text-basic">Text input:</label>
+                    <input type="password" name="text-basic" id="password" value="">
+                    <input type="submit" value="LOGIN" data-theme="a" id="login">
+            </div>
+            <div>
+                Pesan: <div id="status"></div>
+            </div>
+            <a href="main.html">map</a>
+        </div>
+        <div data-role="header" style="padding: 15px;">
+        	Footer
+        </div>
+    </div>
+    <script type="text/javascript" src="cordova.js"></script>
+    </body>
+</html>

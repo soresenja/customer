@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+		<meta http-equiv=“Content-Security-Policy” content=“default-src ‘self’ gap://ready file://* *; style-src ‘self’ ‘unsafe-inline’; script-src ‘self’ ‘unsafe-inline’ ‘unsafe-eval’”/>
+        <!-- <meta http-equiv="refresh" content="3" /> -->
+        <title>Blank App</title>
+    <link rel="stylesheet" type="text/css" href="leaflet/leaflet.css">
+    <script type="text/javascript" src="leaflet/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+    <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+    <style type="text/css">
+        *{
+            margin:0;
+            padding:0;
+        }
+        .btn-ex{
+        	width: 100px !important;
+        	height: 50px !important;
+        	position: absolute;
+        	right: 10px;
+        	top: 20px;
+        	z-index: 9999;
+        }
+    </style>
+</head>
+
+<body>
+    <div data-role="page">
+        <div data-role="header" style="text-align: center;">
+        	Logo
+        </div>
+        <div data-role="main" style="height: 90vh; width: 100%;">
+        	<button class="btn-ex" onclick="location.reload()">Refresh</button>
+        	<div id="map" style="width: 100%; height: 100%;"></div>
+        </div>
+        <div data-role="footer" style="text-align: center;">
+        	<a href="#popupBasic" data-rel="popup" data-transition="pop" class="ui-btn ui-corner-all ui-shadow ui-btn-inline" style="width: 100%;">Notifikasi</a>
+        	<div data-role="popup" id="popupBasic" style="padding:10px;">
+        		<p>PESAN</p>
+        		<input type="text" id="notif" value="">
+        		<input type="button" value="KIRIM" id="insert">
+        	</div>
+        </div>
+    </div>
+    <script type="text/javascript">
+		var map = L.map('map');
+
+		L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiazFkMDA3IiwiYSI6ImNqbjhwcm8zcDBuc3IzeXBidmV5MHF3aXYifQ.NxdVacJZPAf92lKcZIs9yw', {
+			maxZoom: 18,
+			attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
+				'<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+				'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+			id: 'mapbox.streets'
+		}).addTo(map);
+
+		function onLocationFound(e) {
+			var radius = e.accuracy / 2;
+
+			L.marker(e.latlng).addTo(map);
+			L.circle(e.latlng, radius).addTo(map);
+			var ref = function(){
+				   	var ajax = new XMLHttpRequest();
+				   	var method = "GET";
+				   	var url = "http://api.jadwal-pelajaran.com/API/backend-app/config/show.php";
+				   	var ref = ajax.open(method,url,true);
+				   	ajax.send();
+				    ajax.onreadystatechange = function()
+				  	{
+				   		if(this.readyState == 4 && this.status == 200){
+				   			var data = JSON.parse(this.responseText);
+
+				   			for (var i = 0; i < data.length; i++) {
+				   				var firstName = data[i].nama_asli;
+				   				var nomor_wa = data[i].nomor_wa;
+				   				var handphone = data[i].no_handphone;
+				   				var domisili = data[i].domisili;
+				   				var long = data[i].longtitude;
+				   				var lat = data[i].latitude;
+
+				                var marketing = new L.Icon({iconUrl:'leaflet/images/marketing.jpg'});
+				         		var dataDB = new L.Marker([lat,long],{icon:marketing}).bindPopup('<b>Nama saya</b><br>'+firstName+'<br><b> Handphone </b><br>'+nomor_wa+'<br><b>Handphone</b><br>'+handphone+'<br><b>Nomor Handphone</b><br>'+domisili);
+
+						        var layerGroup = L.layerGroup([dataDB]);
+						        layerGroup.addTo(map);
+				   			}
+				   		}
+				   	}
+			   	}
+			   	setInterval(ref , 1000);
+		}
+
+		function onLocationError(e) {
+			alert(e.message);
+		}
+
+		map.on('locationfound', onLocationFound);
+		map.on('locationerror', onLocationError);
+
+		map.locate({setView: true, maxZoom: 16});
+        $(document).ready(function(){
+        	$("#insert").click(function(){
+        		var notif = $("#notif").val();
+        		var dataString = "notif="+notif;
+        		$.ajax({
+        			type:"POST",
+        			url:"http://localhost/backend-app/config/insert-notif.php",
+        			data:dataString,
+					crossDomain: true,
+					cache: false,
+					beforeSend: function(){ $("#insert").val(notif);},
+					success: function(data){
+						if (data=="success"){
+							alert("sukses");
+						}else if (data=="error"){
+							alert("gagal");
+						}
+					}
+        		});return false;
+        	});
+        });
+    </script>
+    <script type="text/javascript" src="cordova.js"></script>
+    </body>
+</html>
