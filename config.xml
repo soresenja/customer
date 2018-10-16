@@ -2,15 +2,13 @@
 <widget id="com.apartemen.cust" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
     <name>Customer</name>
     <description>
-        A blank PhoneGap app.
+        Membantu Kamu Menemukan Apartemen idaman mu
     </description>
     <author email="support@phonegap.com" href="http://phonegap.com">
-        PhoneGap Team
+        support Dev
     </author>
     <content src="index.html" />
     <access origin="*" />
-    <engine name="android" spec="~7.1.1" />
-    <engine name="browser" spec="~5.0.4" />
     <plugin name="cordova-plugin-whitelist" spec="~1.3.3" />
     <allow-navigation href="http://192.168.0.117:3000/*" />
     <allow-navigation href="*://*.localhost:3000/*" />
@@ -19,4 +17,13 @@
     <allow-navigation href="https://*/*" />
     <allow-navigation href="data:*" />
     <plugin name="cordova-plugin-geolocation" spec="^4.0.1" />
+        <variable name="GEOLOCATION_USAGE_DESCRIPTION" value="This app uses your location for maps." />
+    </plugin>
+    <engine name="android" spec="~7.1.1" />
+    <engine name="browser" spec="^5.0.4" />
+    <platform name="android">
+        <uses-permission name="android.permission.ACCESS_COARSE_LOCATION" />
+        <uses-permission name="android.permission.ACCESS_FINE_LOCATION" />
+        <uses-permission name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
+    </platform>
 </widget>

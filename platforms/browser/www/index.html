@@ -3,6 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+        <meta http-equiv="Content-Security-Policy" content="style-src 'self' http://* 'unsafe-inline'; script-src 'self' http://* 'unsafe-inline' 'unsafe-eval'" />
         <title>Blank App</title>
     <link rel="stylesheet" type="text/css" href="leaflet/leaflet.css">
     <script type="text/javascript" src="leaflet/leaflet.js"></script>
@@ -25,32 +26,38 @@
         }
     </style>
     <script type="text/javascript">
-        $(document).ready(function(){
-            var url= "http://localhost/backend-app/config/login.php";
+        //if (localStorage.getItem("login")==null){
+            $(document).ready(function(){
+                var url= "http://api.jadwal-pelajaran.com/API/backend-app/config/login.php";
 
-            $("#login").click(function(){
-                var user = $("#username").val();
-                var pass = $("#password").val();
-                $("#status").text("Wait...");
-                var dataString = "username="+user+"&password="+pass;
-                $.ajax({
-                    type:"POST",
-                    crossDomain:true,
-                    cache:false,
-                    url:url,
-                    data:dataString,
-                    success:function(data){
-                        if(data=="success"){
-                            $("#status").text("Sukses");
-                            localStorage.loginstatus="Username : "+user;
-                            window.location="main.html";
-                        }else if(data=="error"){
-                            $("#status").text("Gagal");
+                $("#login").click(function(){
+                    var user = $("#username").val();
+                    var pass = $("#password").val();
+                    $("#status").text("Wait...");
+                    $.ajax({
+                        type:"GET",
+                        crossDomain:true,
+                        cache:false,
+                        url:url,
+                        data:{
+                            username:user,
+                            password:pass
+                        },
+                        success:function(data){
+                            if(data !== null){
+                                $("#status").text("Sukses");
+                                localStorage.setItem('login',data);
+                                window.location="main.html";
+                            }else if(data=="error"){
+                                $("#status").text("Gagal");
+                            }
                         }
-                    }
-                });  
-            })
-        });
+                    });  
+                })
+            });
+        // }else{
+        //     window.location="main.html";
+        // }
     </script>
 </head>
 
@@ -71,7 +78,6 @@
             <div>
                 Pesan: <div id="status"></div>
             </div>
-            <a href="main.html">map</a>
         </div>
         <div data-role="header" style="padding: 15px;">
         	Footer

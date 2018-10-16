@@ -9,10 +9,10 @@
     </feature>
     <name>Customer</name>
     <description>
-        A blank PhoneGap app.
+        Membantu Kamu Menemukan Apartemen idaman mu
     </description>
     <author email="support@phonegap.com" href="http://phonegap.com">
-        PhoneGap Team
+        support Dev
     </author>
     <content src="index.html" />
     <access origin="*" />

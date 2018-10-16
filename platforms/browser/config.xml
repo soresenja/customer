@@ -2,10 +2,10 @@
 <widget id="com.apartemen.cust" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0" xmlns:gap="http://phonegap.com/ns/1.0">
     <name>Customer</name>
     <description>
-        A blank PhoneGap app.
+        Membantu Kamu Menemukan Apartemen idaman mu
     </description>
     <author email="support@phonegap.com" href="http://phonegap.com">
-        PhoneGap Team
+        support Dev
     </author>
     <content src="index.html" />
     <access origin="*" />
@@ -15,4 +15,9 @@
     <allow-navigation href="http://*/*" />
     <allow-navigation href="https://*/*" />
     <allow-navigation href="data:*" />
+    <plugin name="cordova-plugin-geolocation" spec="^4.0.1" />
+        <variable name="GEOLOCATION_USAGE_DESCRIPTION" value="This app uses your location for maps." />
+    </plugin>
+    <engine name="android" spec="~7.1.1" />
+    <engine name="browser" spec="^5.0.4" />
 </widget>
